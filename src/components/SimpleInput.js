@@ -2,23 +2,17 @@ import { useState } from 'react';
 
 const SimpleInput = (props) => {
   const [name, setName] = useState('');
-  const [valid, setValid] = useState(false);
   const [touched, setTouched] = useState(false);
+
+  const enteredNameValid = name.trim() !== '';
+  const isInvalid = !enteredNameValid && touched;
 
   const inputHandling = (e) => {
     setName(e.target.value);
-
-    if (e.target.value.trim() !== '') {
-      setValid(true);
-    }
   };
 
   const inputBlurHandling = (e) => {
     setTouched(true);
-
-    if (name.trim() === '') {
-      setValid(false);
-    }
   };
 
   const submitHandling = (e) => {
@@ -26,16 +20,13 @@ const SimpleInput = (props) => {
 
     setTouched(true);
 
-    if (name.trim() === '') {
-      setValid(false);
+    if (!enteredNameValid) {
       return;
     }
-    setValid(true);
     console.log(name);
     setName('');
+    setTouched(false);
   };
-
-  const isInvalid = !valid && touched;
 
   const nameInputClasses = isInvalid ? 'form-control invalid' : 'form-control';
 
