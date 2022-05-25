@@ -2,12 +2,16 @@ import { useState } from 'react';
 
 const SimpleInput = (props) => {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [touched, setTouched] = useState(false);
 
+  const [email, setEmail] = useState('');
+  const [emailTouched, setEmailTouched] = useState(false);
+
   const enteredNameValid = name.trim() !== '';
-  const enteredEmailValid = email.trim() !== '';
-  const isInvalid = !enteredNameValid && !enteredEmailValid && touched;
+  const enteredEmailValid = email.includes('@');
+
+  const isInvalid = !enteredNameValid && touched;
+  const emailInvalid = !enteredEmailValid && emailTouched;
 
   let formIsValid = false;
 
@@ -27,6 +31,10 @@ const SimpleInput = (props) => {
     setTouched(true);
   };
 
+  const emailBlurHandling = (e) => {
+    setEmailTouched(true);
+  };
+
   const submitHandling = (e) => {
     e.preventDefault();
 
@@ -39,9 +47,11 @@ const SimpleInput = (props) => {
     setName('');
     setEmail('');
     setTouched(false);
+    setEmailTouched(false);
   };
 
   const InputClasses = isInvalid ? 'form-control invalid' : 'form-control';
+  const emailClasses = emailInvalid ? 'form-control invalid' : 'form-control';
 
   return (
     <form onSubmit={submitHandling}>
@@ -56,16 +66,16 @@ const SimpleInput = (props) => {
         />
         {isInvalid && <p className="error-text">name must not be empty.</p>}
       </div>
-      <div className={InputClasses}>
+      <div className={emailClasses}>
         <label htmlFor="email">Your Email</label>
         <input
           type="email"
           id="email"
           onChange={emailHandling}
           value={email}
-          onBlur={inputBlurHandling}
+          onBlur={emailBlurHandling}
         />
-        {isInvalid && <p className="error-text">email must not be empty.</p>}
+        {emailInvalid && <p className="error-text">email must not be empty.</p>}
       </div>
       <div className="form-actions">
         <button disabled={!formIsValid}>Submit</button>
