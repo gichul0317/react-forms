@@ -31,6 +31,10 @@ const BasicForm = (props) => {
   const submitHandling = (e) => {
     e.preventDefault();
 
+    if (!formValidation) {
+      return;
+    }
+
     nameReset();
     lastNameReset();
     emailReset();
