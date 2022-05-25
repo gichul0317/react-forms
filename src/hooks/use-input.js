@@ -9,6 +9,7 @@ function useInput(validateValue) {
 
   const inputHandling = (e) => {
     setEnteredInput(e.target.value);
+    console.log(e.target.value);
   };
 
   const inputBlurHandling = (e) => {
